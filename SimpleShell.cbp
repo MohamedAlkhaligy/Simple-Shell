@@ -5,6 +5,7 @@
 		<Option title="SimpleShell" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
+		<Option virtualFolders="src/;" />
 		<Build>
 			<Target title="Debug">
 				<Option output="bin/Debug/SimpleShell" prefix_auto="1" extension_auto="1" />
@@ -35,7 +36,9 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="include/shell_core.h" />
-		<Unit filename="main.cpp" />
+		<Unit filename="main.cpp">
+			<Option virtualFolder="src/" />
+		</Unit>
 		<Unit filename="src/shell_core.cpp" />
 		<Extensions>
 			<code_completion />

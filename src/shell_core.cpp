@@ -1,24 +1,28 @@
 #include "shell_core.h"
-#include <string>
-#include <vector>
-#include <algorithm>
 #include <iostream>
+#include <string.h>
+#include <vector>
 #include <sys/wait.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <algorithm>
+#include <iterator>
 #include <cstdlib>
 
 using namespace std;
 
 vector<string> splitCommand(string commandLine);
-string convertToLower(string word);
-bool execute(vector<string> arguemnts);
+bool initializeExecution(vector<string> arguemnts);
+void execute(vector<string> arguments, bool isisAsynchronous);
+char *convert(const string &s);
 
 const string EXIT = "exit";
-
+const string ASYNCHRONOUS = "&";
+const char NULL_CHAR = '\0';
 
 shell_core::shell_core()
 {
+
     //ctor
 }
 
@@ -33,11 +37,10 @@ void shell_core::initializeShell() {
     bool isExit = false;
 
     do {
-
         printf("> ");
         getline(cin, commandLine);
         arguments = splitCommand(commandLine);
-        isExit = execute(arguments);
+        isExit = initializeExecution(arguments);
 
     } while (!isExit);
     exit(0);
@@ -47,6 +50,7 @@ vector<string> splitCommand(string commandLine) {
     vector<string> arguments;
 
     string argument = "";
+    commandLine += " ";
     for (auto character : commandLine) {
         if (character == ' ') {
             if (argument == "") continue;
@@ -56,24 +60,54 @@ vector<string> splitCommand(string commandLine) {
             argument += character;
         }
     }
-
     return arguments;
 }
 
-bool execute(vector<string> arguments) {
+bool initializeExecution(vector<string> arguments) {
     if (!arguments.empty()) {
+        bool isAsynchronous = false;
 
-        if (convertToLower(arguments[0]) == EXIT) {
-            return false;
+        if (arguments[0] == EXIT) {
+            return true;
         }
 
-        for (auto argument : arguments) {
+        if (arguments[arguments.size() - 1] == ASYNCHRONOUS) {
+            isAsynchronous = true;
         }
+
+        execute(arguments, isAsynchronous);
+
     }
     return false;
 }
 
-string convertToLower(string word) {
-    transform(word.begin(), word.end(), word.begin(), ::tolower);
-    return word;
+void execute(vector<string> arguments, bool isAsynchronous) {
+    pid_t pid;
+    int status;
+
+    vector<char*> convertedArguments;
+
+    transform(arguments.begin(), arguments.end(), back_inserter(convertedArguments), convert);
+
+    pid = fork();
+    if (pid == 0) {
+        if (execvp(convertedArguments[0], &convertedArguments[0]) < 0) {
+            perror(convertedArguments[0]);
+        }
+
+    } else if (pid < 0) {
+        perror(convertedArguments[0]);
+    } else {
+        if (!isAsynchronous) {
+            do {
+                waitpid(pid, &status, WUNTRACED);
+            } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+        }
+    }
+}
+
+char *convert(const string &s) {
+   char *pc = new char[s.size()+1];
+   strcpy(pc, s.c_str());
+   return pc;
 }

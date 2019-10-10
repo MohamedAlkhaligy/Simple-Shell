@@ -3,16 +3,17 @@
 	<iostream>
 	<shell_core.h>
 
-1570727039 /home/mohamed/Desktop/SimpleShell/include/shell_core.h
+1570732042 /home/mohamed/Desktop/SimpleShell/include/shell_core.h
 
-1570728655 source:/home/mohamed/Desktop/SimpleShell/src/shell_core.cpp
+1570736224 source:/home/mohamed/Desktop/SimpleShell/src/shell_core.cpp
 	"shell_core.h"
-	<string>
-	<vector>
-	<algorithm>
 	<iostream>
+	<string.h>
+	<vector>
 	<sys/wait.h>
 	<unistd.h>
 	<stdio.h>
+	<algorithm>
+	<iterator>
 	<cstdlib>
 
