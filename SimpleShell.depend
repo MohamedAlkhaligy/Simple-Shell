@@ -5,8 +5,9 @@
 
 1570732042 /home/mohamed/Desktop/SimpleShell/include/shell_core.h
 
-1570736224 source:/home/mohamed/Desktop/SimpleShell/src/shell_core.cpp
+1570748725 source:/home/mohamed/Desktop/SimpleShell/src/shell_core.cpp
 	"shell_core.h"
+	"logger.h"
 	<iostream>
 	<string.h>
 	<vector>
@@ -16,4 +17,22 @@
 	<algorithm>
 	<iterator>
 	<cstdlib>
+
+1570738711 source:/home/mohamed/Desktop/SimpleShell/src/main.cpp
+	"main.h"
+	"shell_core.h"
+	<iostream>
+
+1570736958 /home/mohamed/Desktop/SimpleShell/include/main.h
+
+1570732042 /home/mohamed/Desktop/SimpleShell/src/shell_core.h
+
+1570736958 /home/mohamed/Desktop/SimpleShell/src/main.h
+
+1570748735 source:/home/mohamed/Desktop/SimpleShell/src/logger.cpp
+	"logger.h"
+	<fstream>
+	<iostream>
+
+1570746026 /home/mohamed/Desktop/SimpleShell/include/logger.h
 

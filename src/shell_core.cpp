@@ -1,4 +1,5 @@
 #include "shell_core.h"
+#include "logger.h"
 #include <iostream>
 #include <string.h>
 #include <vector>
@@ -14,11 +15,13 @@ using namespace std;
 vector<string> splitCommand(string commandLine);
 bool initializeExecution(vector<string> arguemnts);
 void execute(vector<string> arguments, bool isisAsynchronous);
+static void signalHandler(int signal);
 char *convert(const string &s);
 
 const string EXIT = "exit";
 const string ASYNCHRONOUS = "&";
 const char NULL_CHAR = '\0';
+static logger lg;
 
 shell_core::shell_core()
 {
@@ -72,6 +75,7 @@ bool initializeExecution(vector<string> arguments) {
         }
 
         if (arguments[arguments.size() - 1] == ASYNCHRONOUS) {
+            arguments.erase(arguments.begin() + arguments.size() - 1);
             isAsynchronous = true;
         }
 
@@ -102,8 +106,15 @@ void execute(vector<string> arguments, bool isAsynchronous) {
             do {
                 waitpid(pid, &status, WUNTRACED);
             } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+        } else {
+            signal(SIGCHLD, signalHandler);
         }
     }
+}
+
+static void signalHandler(int signal) {
+    pid_t chpid = wait(NULL);
+    lg.log(chpid);
 }
 
 char *convert(const string &s) {
