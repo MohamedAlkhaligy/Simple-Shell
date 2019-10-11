@@ -125,20 +125,21 @@ void execute(vector<string> arguments, bool isAsynchronous) {
     int status;
 
     vector<char*> convertedArguments;
-
     transform(arguments.begin(), arguments.end(), back_inserter(convertedArguments), convert);
     convertedArguments.push_back(NULL);
+
     arguments.clear();
 
     pid = fork();
     if (pid == 0) {
         execvp(convertedArguments[0], &convertedArguments[0]);
         perror(convertedArguments[0]);
-        cout << "CHILD ERROR" << endl;
+        //cout << "CHILD ERROR" << endl;
     } else if (pid < 0) {
         perror(convertedArguments[0]);
     } else {
         if (!isAsynchronous) {
+            signal(SIGCHLD, SIG_IGN);
             do {
                 waitpid(pid, &status, WUNTRACED);
             } while (!WIFEXITED(status) && !WIFSIGNALED(status));
