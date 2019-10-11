@@ -86,6 +86,11 @@ bool initializeExecution(vector<string> arguments) {
 }
 
 void execute(vector<string> arguments, bool isAsynchronous) {
+
+    if (isAsynchronous) {
+        signal(SIGCHLD, signalHandler);
+    }
+
     pid_t pid;
     int status;
 
@@ -106,8 +111,6 @@ void execute(vector<string> arguments, bool isAsynchronous) {
             do {
                 waitpid(pid, &status, WUNTRACED);
             } while (!WIFEXITED(status) && !WIFSIGNALED(status));
-        } else {
-            signal(SIGCHLD, signalHandler);
         }
     }
 }

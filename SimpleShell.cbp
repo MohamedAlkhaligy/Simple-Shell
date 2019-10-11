@@ -34,8 +34,10 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="include/logger.h" />
 		<Unit filename="include/main.h" />
 		<Unit filename="include/shell_core.h" />
+		<Unit filename="src/logger.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/shell_core.cpp" />
 		<Extensions>

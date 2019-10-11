@@ -4,19 +4,20 @@
 
 using namespace std;
 
+fstream file;
+
 logger::logger()
 {
-    //ctor
+    file.open ("log_file.txt", ios::in | ios::out | ios::app);
 }
 
 logger::~logger()
 {
-    //dtor
+    file.close();
 }
 
-fstream file;
+
 void logger::log(int ID) {
-    file.open ("log_file.txt", ios::in | ios::out | ios::app);
     if (file.is_open()) {
         file << "Child process was terminated. ID: " + to_string(ID) << endl;
     }

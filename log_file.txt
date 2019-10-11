@@ -1,13 +1,2 @@
-Child process was terminated.24278
-Child process was terminated.24321
-Child process was terminated.24385
-Child process was terminated.-1
-Child process was terminated.-1
-Child process was terminated.-1
-Child process was terminated.-1
-Child process was terminated.-1
-Child process was terminated.-1
-Child process was terminated.-1
-Child process was terminated.-1
-Child process was terminated.-1
-Child process was terminated.-1
+Child process was terminated. ID: 3993
+Child process was terminated. ID: 4007
