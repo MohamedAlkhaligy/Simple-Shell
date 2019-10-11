@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <iterator>
 #include <cstdlib>
+#include <signal.h>
 
 using namespace std;
 
@@ -22,7 +23,6 @@ const string EXIT = "exit";
 const string ASYNCHRONOUS = "&";
 const string CHANGE_DIRECTORY = "cd";
 const int CD_ARGUMENTS_SIZE = 2;
-static logger lg;
 
 shell_core::shell_core()
 {
@@ -36,7 +36,7 @@ shell_core::~shell_core()
 }
 
 /**
-* Intializes the basic shell loop of getting command, splitting the command
+* Intializes the basic shell loop of: getting command, splitting the command
 * to its arguments and finally executing it.
 */
 void shell_core::initializeShell() {
@@ -75,12 +75,13 @@ vector<string> splitCommand(string commandLine) {
             argument += character;
         }
     }
+    commandLine.clear();
     return arguments;
 }
 
 /**
-* Determines whether this is an Asyncrhonous or syncrhonous execution, or an
-* exit command.
+* Determines whether this is an asyncrhonous or syncrhonous execution. Also
+* executes some non-execvp-supported commands.
 *@param arguments of the command line in vector form.
 *@return true if executable, or false incase of exit.
 */
@@ -120,31 +121,29 @@ bool initializeExecution(vector<string> arguments) {
 *@param arguements of the command line, and execution type.
 */
 void execute(vector<string> arguments, bool isAsynchronous) {
-
-    if (isAsynchronous) {
-        signal(SIGCHLD, signalHandler);
-    }
-
     pid_t pid;
     int status;
 
     vector<char*> convertedArguments;
 
     transform(arguments.begin(), arguments.end(), back_inserter(convertedArguments), convert);
+    convertedArguments.push_back(NULL);
+    arguments.clear();
 
     pid = fork();
     if (pid == 0) {
-        if (execvp(convertedArguments[0], &convertedArguments[0]) < 0) {
-            perror(convertedArguments[0]);
-        }
+        execvp(convertedArguments[0], &convertedArguments[0]);
+        perror(convertedArguments[0]);
+        cout << "CHILD ERROR" << endl;
     } else if (pid < 0) {
         perror(convertedArguments[0]);
     } else {
         if (!isAsynchronous) {
-            waitpid(pid, &status, WUNTRACED);
             do {
-
+                waitpid(pid, &status, WUNTRACED);
             } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+        } else {
+            signal(SIGCHLD, signalHandler);
         }
     }
 }
@@ -154,6 +153,7 @@ void execute(vector<string> arguments, bool isAsynchronous) {
 *@param singal ID which is mainly SIGCHLD.
 */
 static void signalHandler(int signal) {
+    logger lg;
     pid_t chpid = wait(NULL);
     lg.log(chpid);
 }

@@ -1,6 +1,7 @@
 #include "logger.h"
 #include <fstream>
 #include <iostream>
+#include <ctime>
 
 using namespace std;
 
@@ -22,6 +23,8 @@ logger::~logger()
 */
 void logger::log(int ID) {
     if (file.is_open()) {
-        file << "Child process was terminated. ID: " + to_string(ID) << endl;
+        time_t currentTime = time(0);
+        char* dt = ctime(&currentTime);
+        file << dt << "Child process was terminated. ID: " + to_string(ID) << endl;
     }
 }

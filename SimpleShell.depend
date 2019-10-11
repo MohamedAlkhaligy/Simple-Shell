@@ -1,11 +1,22 @@
 # depslib dependency file v1.0
-1570724676 source:/home/mohamed/Desktop/SimpleShell/main.cpp
+1570812457 source:/home/mohamed/Desktop/SimpleShell/src/logger.cpp
+	"logger.h"
+	<fstream>
 	<iostream>
-	<shell_core.h>
+	<ctime>
+
+1570746026 /home/mohamed/Desktop/SimpleShell/include/logger.h
+
+1570800769 source:/home/mohamed/Desktop/SimpleShell/src/main.cpp
+	"main.h"
+	"shell_core.h"
+	<iostream>
+
+1570736958 /home/mohamed/Desktop/SimpleShell/include/main.h
 
 1570732042 /home/mohamed/Desktop/SimpleShell/include/shell_core.h
 
-1570806686 source:/home/mohamed/Desktop/SimpleShell/src/shell_core.cpp
+1570818999 source:/home/mohamed/Desktop/SimpleShell/src/shell_core.cpp
 	"shell_core.h"
 	"logger.h"
 	<iostream>
@@ -17,22 +28,5 @@
 	<algorithm>
 	<iterator>
 	<cstdlib>
-
-1570800769 source:/home/mohamed/Desktop/SimpleShell/src/main.cpp
-	"main.h"
-	"shell_core.h"
-	<iostream>
-
-1570736958 /home/mohamed/Desktop/SimpleShell/include/main.h
-
-1570732042 /home/mohamed/Desktop/SimpleShell/src/shell_core.h
-
-1570736958 /home/mohamed/Desktop/SimpleShell/src/main.h
-
-1570800803 source:/home/mohamed/Desktop/SimpleShell/src/logger.cpp
-	"logger.h"
-	<fstream>
-	<iostream>
-
-1570746026 /home/mohamed/Desktop/SimpleShell/include/logger.h
+	<signal.h>
 
