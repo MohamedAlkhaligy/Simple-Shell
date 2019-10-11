@@ -34,6 +34,10 @@ shell_core::~shell_core()
     //dtor
 }
 
+/**
+* Intializes the basic shell loop of getting command, splitting the command
+* to its arguments and finally executing it.
+*/
 void shell_core::initializeShell() {
     string commandLine;
     vector<string> arguments;
@@ -49,6 +53,11 @@ void shell_core::initializeShell() {
     exit(0);
 }
 
+/**
+* Splits the command into its arguments
+*@param commandLine; the command line from the user.
+*@return arguments of the command line as a vector.
+*/
 vector<string> splitCommand(string commandLine) {
     vector<string> arguments;
 
@@ -59,6 +68,8 @@ vector<string> splitCommand(string commandLine) {
             if (argument == "") continue;
             arguments.push_back(argument);
             argument = "";
+        } else if (character == '\n' || character == '\t') {
+            continue;
         } else {
             argument += character;
         }
@@ -66,6 +77,12 @@ vector<string> splitCommand(string commandLine) {
     return arguments;
 }
 
+/**
+* Determines whether this is an Asyncrhonous or syncrhonous execution, or an
+* exit command.
+*@param arguments of the command line in vector form.
+*@return true if executable, or false incase of exit.
+*/
 bool initializeExecution(vector<string> arguments) {
     if (!arguments.empty()) {
         bool isAsynchronous = false;
@@ -85,6 +102,10 @@ bool initializeExecution(vector<string> arguments) {
     return false;
 }
 
+/**
+* Executes the command.
+*@param arguements of the command line, and execution type.
+*/
 void execute(vector<string> arguments, bool isAsynchronous) {
 
     if (isAsynchronous) {
@@ -115,11 +136,20 @@ void execute(vector<string> arguments, bool isAsynchronous) {
     }
 }
 
+/**
+* Handles SIGCHLD incase of child terminates and logs that to a file.
+*@param singal ID which is mainly SIGCHLD.
+*/
 static void signalHandler(int signal) {
     pid_t chpid = wait(NULL);
     lg.log(chpid);
 }
 
+/**
+* Converts a string to char* for execvp execution.
+*@param command argument in form of string.
+*@return command argument in form of char*.
+*/
 char *convert(const string &s) {
    char *pc = new char[s.size()+1];
    strcpy(pc, s.c_str());

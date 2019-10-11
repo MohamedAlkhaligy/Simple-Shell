@@ -14,6 +14,9 @@ main::~main()
     //dtor
 }
 
+/**
+* Start the shell.
+*/
 int main()
 {
 
