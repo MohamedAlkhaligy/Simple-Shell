@@ -7,20 +7,16 @@
 
 1570746026 /home/mohamed/Desktop/SimpleShell/include/logger.h
 
-1570825646 source:/home/mohamed/Desktop/SimpleShell/src/main.cpp
+1570826534 source:/home/mohamed/Desktop/SimpleShell/src/main.cpp
+	"main.h"
+	"shell_core.h"
 	<iostream>
-	<stdlib.h>
-	<stdio.h>
-	<string.h>
-	<unistd.h>
-	<sys/wait.h>
-	<bits/stdc++.h>
 
 1570736958 /home/mohamed/Desktop/SimpleShell/include/main.h
 
 1570732042 /home/mohamed/Desktop/SimpleShell/include/shell_core.h
 
-1570822623 source:/home/mohamed/Desktop/SimpleShell/src/shell_core.cpp
+1570829925 source:/home/mohamed/Desktop/SimpleShell/src/shell_core.cpp
 	"shell_core.h"
 	"logger.h"
 	<iostream>

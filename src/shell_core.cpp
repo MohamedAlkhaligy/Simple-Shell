@@ -134,7 +134,7 @@ void execute(vector<string> arguments, bool isAsynchronous) {
     if (pid == 0) {
         execvp(convertedArguments[0], &convertedArguments[0]);
         perror(convertedArguments[0]);
-        //cout << "CHILD ERROR" << endl;
+        exit(0);
     } else if (pid < 0) {
         perror(convertedArguments[0]);
     } else {
