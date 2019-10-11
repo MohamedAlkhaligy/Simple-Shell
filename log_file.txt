@@ -1,2 +1,6 @@
 Child process was terminated. ID: 3993
 Child process was terminated. ID: 4007
+Child process was terminated. ID: -1
+Child process was terminated. ID: 9973
+Child process was terminated. ID: -1
+Child process was terminated. ID: -1

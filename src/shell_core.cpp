@@ -20,7 +20,8 @@ char *convert(const string &s);
 
 const string EXIT = "exit";
 const string ASYNCHRONOUS = "&";
-const char NULL_CHAR = '\0';
+const string CHANGE_DIRECTORY = "cd";
+const int CD_ARGUMENTS_SIZE = 2;
 static logger lg;
 
 shell_core::shell_core()
@@ -54,7 +55,7 @@ void shell_core::initializeShell() {
 }
 
 /**
-* Splits the command into its arguments
+* Splits the command into its arguments.
 *@param commandLine; the command line from the user.
 *@return arguments of the command line as a vector.
 */
@@ -89,6 +90,18 @@ bool initializeExecution(vector<string> arguments) {
 
         if (arguments[0] == EXIT) {
             return true;
+        } else if (arguments[0] == CHANGE_DIRECTORY) {
+            if (arguments.size() == CD_ARGUMENTS_SIZE) {
+                vector<char*> convertedArguments;
+                transform(arguments.begin(), arguments.end(), back_inserter(convertedArguments), convert);
+                int cd = chdir(convertedArguments[1]);
+                if (cd < 0) {
+                   perror(CHANGE_DIRECTORY.c_str());
+                }
+            } else {
+                cout << "CD: Too many arguments" << endl;
+            }
+            return false;
         }
 
         if (arguments[arguments.size() - 1] == ASYNCHRONOUS) {
@@ -124,13 +137,13 @@ void execute(vector<string> arguments, bool isAsynchronous) {
         if (execvp(convertedArguments[0], &convertedArguments[0]) < 0) {
             perror(convertedArguments[0]);
         }
-
     } else if (pid < 0) {
         perror(convertedArguments[0]);
     } else {
         if (!isAsynchronous) {
+            waitpid(pid, &status, WUNTRACED);
             do {
-                waitpid(pid, &status, WUNTRACED);
+
             } while (!WIFEXITED(status) && !WIFSIGNALED(status));
         }
     }
@@ -147,6 +160,7 @@ static void signalHandler(int signal) {
 
 /**
 * Converts a string to char* for execvp execution.
+* Used with tranform fucntion.
 *@param command argument in form of string.
 *@return command argument in form of char*.
 */
